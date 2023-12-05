@@ -45,6 +45,24 @@ def get_val(ipt, m):
 
     return rvs
 
+def combine(arr):
+    i = 0
+    j = 1
+    rtn = []
+    while i + j < len(arr):
+        l = arr[i][1]
+        while arr[i][0] + l == arr[i + j][0]:
+            l += arr[i + j][1]
+            j += 1
+        rtn.append((arr[i][0], l))
+        i += j
+        j = 1
+        if i == len(arr) - 1:
+            rtn.append(arr[-1])
+    return rtn
+
+
+
 
 
 a = open(0)
@@ -67,7 +85,7 @@ try:
         new_nums = []
         for seed in seeds:
             new_nums += get_val(seed, m)
-        seeds = new_nums
+        seeds = combine(sorted(new_nums))
 
 except StopIteration:
     print(min(seeds))
