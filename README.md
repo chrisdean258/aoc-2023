@@ -91,5 +91,8 @@ lengths for this to be valid.
 Spacial supporting and dfs
 
 ## Day 23
+
+Graph building and longest path finding
+
 ## Day 24
 ## Day 25
