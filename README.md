@@ -95,4 +95,9 @@ Spacial supporting and dfs
 Graph building and longest path finding
 
 ## Day 24
+
+Line intersection and building an equation and passing it to a solver.  Part 1
+was pretty good but part 2 fell flat for me. I wonder if there is an approach
+that creates linearity but honestly feels like my solution was fine.
+
 ## Day 25
