@@ -101,3 +101,5 @@ was pretty good but part 2 fell flat for me. I wonder if there is an approach
 that creates linearity but honestly feels like my solution was fine.
 
 ## Day 25
+
+Ford Fulkerson
