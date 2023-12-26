@@ -16,20 +16,16 @@ def std(x, y, vx, vy):
 
 
 def when(p, x, y, dx, dy):
-    test = Fraction(p[0] - x, dx)
-    test2 = Fraction(p[1] - y, dy)
-    assert abs(test - test2) < 1, f"{test} == {test2}"
-    return test
+    return Fraction(p[0] - x, dx)
 
 
-def det(a):
-    return a[0][0] * a[1][1] - a[1][0] * a[0][1]
-
-
-def solve(a, b):
-    d = 1 / det(a)
-    inv = np.array([[a[1][1] * d, -a[0][1] * d], [-a[1][0] * d, a[0][0] * d]])
-    return inv @ b.T
+def solve(a, c):
+    den = a[0][0] * a[1][1] - a[0][1] * a[1][0]
+    if den == 0:
+        return None
+    xnum = c[0] * a[1][1] - a[0][1] * c[1]
+    ynum = c[1] * a[0][0] - a[1][0] * c[0]
+    return np.array([xnum / den, ynum / den])
 
 
 s = 0
@@ -41,13 +37,12 @@ for i, drop in enumerate(drops):
         std2, std23 = std(xx, yy, vxx, vyy)
         a = np.array([std1, std2])
         b = np.array([std13, std23])
-        if det(a) == 0:
-            continue
         p = solve(a, b)
+        if p is None:
+            continue
         if not ((200000000000000 <= p).all() and (400000000000000 >= p).all()):
             continue
         t1 = when(p, x, y, vx, vy)
-        t2 = when(p, xx, yy, vxx, vyy)
-        if t1 >= 0 and t2 >= 0:
-            s += 1
+        if t1 >= 0:
+            s += when(p, xx, yy, vxx, vyy) >= 0
 print(s)
