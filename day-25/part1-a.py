@@ -7,35 +7,31 @@ from copy import deepcopy
 sys.setrecursionlimit(10000)
 
 
-def find_path(graph, src, sink):
-    seen = set()
-
-    def _find_path(graph, src, sink, seen):
-        if src in seen:
-            return None
-        seen.add(src)
-        for node, v in graph[src].items():
-            if v == 0:
-                continue
-            if node == sink:
-                return [sink]
-            if path := _find_path(graph, node, sink, seen):
-                path.append(node)
-                return path
+def find_path(graph, src, sink, seen):
+    if src in seen:
         return None
-    return (_find_path(graph, src, sink, seen) or [])[::-1]
+    seen.add(src)
+    for node, v in graph[src].items():
+        if v == 0:
+            continue
+        if node == sink:
+            return [sink]
+        if path := find_path(graph, node, sink, seen):
+            path.append(node)
+            return path
+    return None
 
 
 def ff(graph, src, sink):
     count = 0
-    while path := find_path(graph, src, sink):
-        count += 1
-        if count == 4:
-            return 4
-        for n1, n2 in zip(path, path[1:]):
+    while True:
+        seen = set()
+        rev_path = find_path(graph, src, sink, seen)
+        count += rev_path is not None
+        if rev_path is None or count == 4:
+            return count
+        for n2, n1 in zip(rev_path, rev_path[1:]):
             graph[n1][n2] -= 1
-            graph[n2][n1] += 1
-    return count
 
 
 def size(g, src):
@@ -59,11 +55,12 @@ for line in open(0):
         graph[con][name] = 1
 
 nodes = list(graph.keys())
-src = nodes[0]
 
+src = nodes[0]
 for sink in nodes[1:]:
     g = deepcopy(graph)
-    if ff(g, src, sink) == 3:
+    f = ff(g, src, sink)
+    if f == 3:
         a = size(g, src)
         print(a * (len(g) - a))
         break
