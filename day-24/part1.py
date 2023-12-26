@@ -24,18 +24,10 @@ for i, drop in enumerate(drops):
 
         t1n = xnum - x1 * xden
         t1d = vx1 * xden
-
-        if t1d < 0:
-            t1d = -t1d
-            t1n = -t1n
-
         t2n = xnum - x2 * xden
         t2d = vx2 * xden
-        if t2d < 0:
-            t2d = -t2d
-            t2n = -t2n
 
-        if t1n < 0 or t2n < 0:
+        if t1n ^ t1d < 0 or t2n ^ t2d < 0:
             continue
 
         y_1n = y1 * t1d + t1n * vy1
